@@ -2,6 +2,7 @@
   "formatVersion": 1,
   "id": "lich-notes",
   "name": "LichNotes",
+  "description": "Browse, read and edit the Markdown notes in a folder of yours.",
   "version": "0.1.1",
   "executable": "lich-notes",
   "surfaces": [{ "id": "main", "title": "Notes", "icon": "notebook-pen" }]

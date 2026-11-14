@@ -1,1 +1,7 @@
-{ "manifest": { "name": "LichNotes", "surfaces": { "main": { "title": "Notes" } } } }
+{
+  "manifest": {
+    "name": "LichNotes",
+    "description": "Browse, read and edit the Markdown notes in a folder of yours.",
+    "surfaces": { "main": { "title": "Notes" } }
+  }
+}
