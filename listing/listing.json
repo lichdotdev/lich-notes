@@ -1,1 +1,18 @@
-{ "categories": ["notes"] }
+{
+  "categories": ["notes"],
+  "cover": "cover.png",
+  "screenshots": [
+    {
+      "file": "screenshots/browse.png",
+      "alt": "A list of notes on the left, newest first, with the meeting note Sync with design open in Preview: headings, bullets and a task list with one item checked."
+    },
+    {
+      "file": "screenshots/split.png",
+      "alt": "Split mode on a daily note: the Markdown source in an editor on the left and the rendered headings and bullet list beside it on the right."
+    },
+    {
+      "file": "screenshots/edit.png",
+      "alt": "Edit mode on a Reading list note: the plain Markdown source fills the pane, with the Preview, Split and Edit switch and a Save button above it."
+    }
+  ]
+}
