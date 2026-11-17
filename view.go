@@ -2,6 +2,7 @@ package main
 
 import (
 	"github.com/lichdotdev/lich/extension"
+	"github.com/lichdotdev/lich/extension/i18n"
 )
 
 const (
@@ -27,8 +28,16 @@ type (
 func (a *app) render() {
 	data := extension.RenderData{Surface: surfaceID, Root: a.vaultForm()}
 	if !a.picking {
-		data.Root = extension.Box.New(box{Direction: extension.DirectionRow, Grow: 1, Gap: gutter},
-			a.sidebar(), a.notePane())
+		root := extension.Box.New(box{Direction: extension.DirectionRow, Grow: 1, Gap: gutter}, a.sidebar(), a.notePane())
+		data.Root = extension.Box.New(box{Grow: 1}, root, extension.Dialog.New(extension.DialogProps{
+			Open: a.confirmingDelete, Title: a.t("delete.title"),
+			Description: a.t("delete.description", i18n.Args{"title": a.title()}),
+			OnClose:     onDeleteNo,
+			Actions: []node{
+				extension.Button.New(extension.ButtonProps{Text: a.t("delete.cancel"), Variant: extension.VariantGhost, OnPress: onDeleteNo}),
+				extension.Button.New(extension.ButtonProps{Text: a.t("delete.confirm"), Variant: extension.VariantDestructive, OnPress: onDeleteYes}),
+			},
+		}))
 		data.Shortcuts = a.shortcuts()
 	}
 	a.send(extension.Render.New(data))
@@ -108,6 +117,9 @@ func (a *app) notePane() node {
 		extension.Box.New(box{Grow: 1}, extension.Label.New(extension.LabelProps{
 			Text: a.title(), Weight: extension.FontSemibold, MaxLines: 1,
 		})),
+		extension.GhostIconButton.New(extension.GhostIconButtonProps{
+			Icon: "trash-2", Hint: a.t("delete.button"), OnPress: onDelete,
+		}),
 		extension.ToggleGroup.New(extension.ToggleGroupProps{
 			Value: string(a.mode), Size: extension.ToggleSizeSM, OnChange: onMode, Items: []extension.ToggleItem{
 				{Value: string(modePreview), Text: a.t("preview"), Icon: "eye"},

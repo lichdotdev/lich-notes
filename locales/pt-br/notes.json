@@ -6,6 +6,13 @@
   "edit": "Editar",
   "save": "Salvar",
   "saved": "{title} salva",
+  "delete": {
+    "button": "Excluir nota",
+    "title": "Excluir nota?",
+    "description": "Excluir {title} permanentemente? As alterações não salvas também serão perdidas.",
+    "cancel": "Cancelar",
+    "confirm": "Excluir"
+  },
   "placeholder": "Escreva em Markdown",
   "empty": {
     "vault": "Nenhuma nota neste cofre",
@@ -26,6 +33,7 @@
     "list": "Não foi possível listar o cofre",
     "read": "Não foi possível abrir a nota",
     "save": "Não foi possível salvar a nota",
+    "delete": "Não foi possível excluir a nota",
     "create": "Não foi possível criar a nota",
     "settings": "Não foi possível guardar o cofre"
   }

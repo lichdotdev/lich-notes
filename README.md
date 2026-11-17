@@ -14,6 +14,7 @@ Read it to see how an extension is put together, then copy what you need into yo
   rendered note and updates it as you type, **Edit** shows the source alone. **Save** writes the file, and
   saving from Edit goes back to the preview.
 - Creates a new note as `Untitled N.md`.
+- Deletes the selected note after confirmation; unsaved changes are deleted with it.
 
 | Key | Does |
 | --- | --- |
@@ -23,6 +24,7 @@ Read it to see how an extension is put together, then copy what you need into yo
 | `Esc` | Hands the keyboard back, so `/` works again |
 
 A note you changed is saved when you open another one, so nothing typed is lost by clicking away.
+Deleting a note removes its Markdown file from the vault permanently.
 
 The first time you open the screen it asks for the vault's path. The folder button beside the search field
 changes it later. The interface follows lich's language, in English and Brazilian Portuguese.
@@ -83,7 +85,7 @@ types, so no JSON is written by hand here.
 | `main.go` | Start-up: load the catalogs and the settings, then answer lich's messages until it closes stdin |
 | `app.go` | The state of the screen and what each message from lich changes in it |
 | `view.go` | The component tree built from that state, and the keyboard shortcuts |
-| `vault.go` | The notes on disk: list, search, read, save, create. Knows nothing about lich |
+| `vault.go` | The notes on disk: list, search, read, save, create, delete. Knows nothing about lich |
 | `settings.go` | The vault's path, kept in the data directory lich gives the extension |
 | `release.sh` | Builds the archives and `checksums.txt` a release carries |
 

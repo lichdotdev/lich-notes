@@ -108,6 +108,33 @@ func SaveNote(vault, rel, text string) error {
 	return os.WriteFile(path, []byte(text), noteFileMode)
 }
 
+func DeleteNote(vault, rel string) error {
+	path, err := notePath(vault, rel)
+	if err != nil {
+		return err
+	}
+	local, err := filepath.Rel(vault, path)
+	if err != nil {
+		return err
+	}
+	if !strings.EqualFold(filepath.Ext(local), noteExt) {
+		return fmt.Errorf("not a Markdown note: %q", rel)
+	}
+	root, err := os.OpenRoot(vault)
+	if err != nil {
+		return err
+	}
+	defer root.Close()
+	info, err := root.Lstat(local)
+	if err != nil {
+		return err
+	}
+	if info.IsDir() {
+		return fmt.Errorf("not a Markdown note: %q", rel)
+	}
+	return root.Remove(local)
+}
+
 // CreateNote makes an empty "Untitled N.md" at the top of vault, N the first
 // number no file has, and returns its path.
 func CreateNote(vault string) (string, error) {

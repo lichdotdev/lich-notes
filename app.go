@@ -20,6 +20,9 @@ const (
 	onSplit       extension.Handler = "split"
 	onDraft       extension.Handler = "draft"
 	onSave        extension.Handler = "save"
+	onDelete      extension.Handler = "delete"
+	onDeleteYes   extension.Handler = "delete.confirm"
+	onDeleteNo    extension.Handler = "delete.cancel"
 	onLink        extension.Handler = "link"
 	onVaultInput  extension.Handler = "vault.input"
 	onVaultOpen   extension.Handler = "vault.open"
@@ -48,9 +51,10 @@ type app struct {
 	selected string
 	// text is the open note as the person has it; saved is what the file
 	// holds, so the two differ while there is something to save.
-	text  string
-	saved string
-	mode  mode
+	text             string
+	saved            string
+	mode             mode
+	confirmingDelete bool
 	// split is the share of the editor in split mode.
 	split float64
 
@@ -107,6 +111,14 @@ func (a *app) event(e extension.EventData) {
 		if a.save() && a.mode == modeEdit {
 			a.mode = modePreview
 		}
+	case onDelete:
+		a.confirmingDelete = a.selected != ""
+	case onDeleteYes:
+		if a.confirmingDelete {
+			a.deleteNote()
+		}
+	case onDeleteNo:
+		a.confirmingDelete = false
 	case onLink:
 		// lich opens only http and https, and drops the rest.
 		a.send(extension.OpenExternal.New(extension.OpenExternalData{URL: e.Text}))
@@ -119,6 +131,16 @@ func (a *app) event(e extension.EventData) {
 	case onVaultCancel:
 		a.picking = false
 	}
+}
+
+func (a *app) deleteNote() {
+	if err := DeleteNote(a.vault, a.selected); err != nil {
+		a.confirmingDelete = false
+		a.fail("error.delete", err)
+		return
+	}
+	a.selected, a.text, a.saved, a.confirmingDelete = "", "", "", false
+	a.reload()
 }
 
 // reload lists the vault again: notes change on disk behind the screen.
